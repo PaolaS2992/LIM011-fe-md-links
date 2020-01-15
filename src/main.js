@@ -1,1 +1,3 @@
-console.log('Viva el Peru !!!');
+import { message } from './example.js';
+
+message();
