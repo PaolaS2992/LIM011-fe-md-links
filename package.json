@@ -1,0 +1,33 @@
+{
+  "name": "md-links",
+  "version": "0.0.1",
+  "description": "Testeador de links de archivos Markdown",
+  "main": "src/index.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "jest --coverage",
+    "start": "serve src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaolaS2992/LIM011-fe-md-links.git"
+  },
+  "keywords": [
+    "nodeJS"
+  ],
+  "author": "PSHG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PaolaS2992/LIM011-fe-md-links/issues"
+  },
+  "homepage": "https://github.com/PaolaS2992/LIM011-fe-md-links#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "jest": "^24.9.0"
+  }
+}
