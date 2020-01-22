@@ -36,5 +36,8 @@
     "eslint-plugin-jest": "^23.6.0",
     "jest": "^24.9.0",
     "serve": "^11.3.0"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
   }
 }
