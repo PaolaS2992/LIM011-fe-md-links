@@ -1,4 +1,4 @@
-import { verifyPathAbsolute, converterAbsolute } from '../src/path.js';
+import { verifyPathAbsolute, converterAbsolute, verifyDirectory } from '../src/app.js';
 
 describe('verifyPathAbsolute', () => {
   it('deberia ser una funcion', () => {
@@ -21,5 +21,11 @@ describe('converterAbsolute', () => {
     const pathRelative = './README.md';
     const pathAbsolute = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
     expect(converterAbsolute(pathRelative)).toEqual(pathAbsolute);
+  });
+});
+
+describe('verifyDirectory', () => {
+  it('Deberia verificar si es directorio', () => {
+    expect(verifyDirectory('../README.md')).toEqual(false);
   });
 });

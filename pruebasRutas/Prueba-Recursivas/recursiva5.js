@@ -1,5 +1,7 @@
-import { verifyDirectory, readDirectory } from './fileSystem.js';
-import { unionPath, verifyExtension } from './path.js';
+import {
+  verifyDirectory, readDirectory, unionPath, verifyExtension,
+} from '../../src/app.js';
+// import { unionPath, verifyExtension } from './path.js';
 
 /**
  * Algoritmo recursividad:
