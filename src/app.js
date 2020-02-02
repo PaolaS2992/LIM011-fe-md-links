@@ -31,6 +31,9 @@ export const verifyDirectory = (ruta) => new Promise((resolve, reject) => {
   });
 });
 
+// Vaidar Ruta existente.
+export const existPathAbsolute = (ruta) => fs.existsSync(ruta);
+
 // Validar si es directorio. SINCRONO.
 export const verifyDirectory1 = (ruta) => fs.lstatSync(ruta).isDirectory();
 
