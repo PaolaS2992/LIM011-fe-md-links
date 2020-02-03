@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import {
-  verifyDirectory, readDirectory, unionPath, verifyExtension, readDocument, converterHtml, verifyPathAbsolute, converterAbsolute, existPathAbsolute,
+  verifyDirectory, readDirectory, unionPath, verifyExtension, readDocument, converterHtml, verifyPathAbsolute, converterAbsolute,
 } from './app.js';
 
 //  1. Devuelve un array de documentos Markdown - "Funcion recursiva".
@@ -103,72 +103,7 @@ const templateString = `
 console.log('arrLinks: ', arrLinks(templateString).then((res) => console.log(res)));
 // console.log('arrLinks: ', arrLinks(templateString)); */
 
-export const union1 = (pathAbsolute) => {
-  return arrMarkdown(pathAbsolute)
-    .then((docMd) => {
-      // const newArray = [];
-      // return docMd;
-      docMd.forEach((cadaMD) => {
-        // console.log(typeof cadaMD);
-        renderHtml(cadaMD)
-          .then((html) => {
-            // return console.log(html);
-            arrLinks(html, pathAbsolute)
-              .then((arrObj) => {
-                return console.log(arrObj);
-                // return arrObj;
-
-                /* arrObj.forEach((ele) => {
-                  // console.log(ele);
-                  newArray.push(ele);
-                });
-                // return console.log(newArray);
-                // return newArray; */
-              });
-          });
-      });
-    // return console.log(newArray);
-    })
-    .catch((e) => console.log(e));
-};
-
-export const union3 = (pathAbsolute) => {
-  const arrayObj = [];
-  arrMarkdown(pathAbsolute)
-    .then((array) => {
-      array.forEach((md) => {
-        return renderHtml(md)
-          .then((mdLeido) => {
-            arrLinks(mdLeido, md)
-              .then((obj) => {
-                // console.log(obj);
-                arrayObj.push(obj);
-              });
-            return arrayObj;
-          });
-      });
-    });
-  return arrayObj;
-};
-
-export const union4 = (pathAbsolute) => {
-  return arrMarkdown(pathAbsolute)
-    .then((array) => {
-      const arrayObj = [];
-      array.forEach((md) => {
-        renderHtml(md)
-          .then((mdLeido) => {
-            arrLinks(mdLeido, md)
-              .then((obj) => {
-                arrayObj.push(obj);
-              });
-            return arrayObj;
-          });
-      });
-      return arrayObj;
-    });
-};
-
+// 4. Devuelve una ruta absoluta.
 export const isAbsolute = (path) => new Promise((resolve, reject) => {
   let newPathAbsolute = '';
   if (verifyPathAbsolute(path) === true) {
@@ -180,52 +115,42 @@ export const isAbsolute = (path) => new Promise((resolve, reject) => {
   return resolve(newPathAbsolute);
 });
 
-export const union5 = (path) => {
-  return isAbsolute(path)
-    .then((pathAbsolute) => {
+// 5. Funciòn MdLinks
+export const mdLink1 = (pathAbsolute) => {
+  return arrMarkdown(pathAbsolute)
+    .then((docMd) => {
       let newArray = [];
-      return arrMarkdown(pathAbsolute)
-        .then((docMd) => {
-          // typeof docMd
-          docMd.forEach((md) => {
-            // console.log(typeof md);
-            renderHtml(md)
-              .then((html) => {
-                // console.log('contenido html: ', html);
-                arrLinks(html, path)
-                  .then((arrObj) => {
-                    console.log('obj: ', arrObj);
-
-                    return Promise.all(arrObj).then((response) => {
-                      console.log('Promise all: ', response);
-                      /* response.forEach((respuesta) => {
-                        newArray = newArray.concat(respuesta);
-                      }); */
-                      return response;
-                    });
-
-                    // return console.log(typeof arrObj);
-                    // return arrObj;
-
-                    /* newArray.push(arrObj);
-                    console.log('sin forEach: ', newArray); */
-
-                    /* arrObj.forEach((obj) => {
-                      newArray.push(obj);
-                    });
-                    console.log('newArray: ', newArray); */
-                  });
-                // console.log('newArray: ', newArray); // no, sale un array vacio.
-              });
-            // console.log('newArray: ', newArray); no, sale cuatro array vacios.
-          });
+      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
+        .then((html) => arrLinks(html, pathAbsolute)));
+      return Promise.all(newMap).then((responseMap) => {
+        responseMap.forEach((respuesta) => {
+          newArray = newArray.concat(respuesta);
         });
-    }).catch((error) => console.log(error));
+        return newArray;
+      });
+    })
+    .catch((e) => console.log(e));
+};
+
+export const mdLink2 = (path) => {
+  return isAbsolute(path).then((pathAbsolute) => {
+    return arrMarkdown(pathAbsolute)
+      .then((docMd) => {
+        let newArray = [];
+        const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
+          .then((html) => arrLinks(html, pathAbsolute)));
+        return Promise.all(newMap).then((responseMap) => {
+          responseMap.forEach((respuesta) => {
+            newArray = newArray.concat(respuesta);
+          });
+          return newArray;
+        });
+      });
+  }).catch((e) => console.log(e));
 };
 
 const rutaAbsolutaMd = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
 const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
-const rutaa = './';
-// union(rutaAbsolutaMd).then((md) => console.log('tipo de dato: ', typeof md));
-console.log(union5(directorio).then((e) => console.log(e)));
-// console.log(isAbsolute(rutaa).then((e) => console.log(e)));
+const ruta = './';
+
+console.log(mdLink2(directorio).then((e) => console.log(e)));
