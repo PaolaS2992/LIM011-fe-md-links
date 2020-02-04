@@ -64,7 +64,12 @@ export const converterHtml = (documentMnd) => {
 
 /* ----------- FETCH ----------- */
 
-// Status URL.
+// Antes.
 export const statusHttp = (url) => fetch(url)
   .then((res) => res.status)
   .catch((err) => console.log(err));
+
+// Status URL. // Agregar el array de obj de 3 y que devuelva 5 (incuye status, y el otro x)
+/* export const statusHttp = (arrLinks) => fetch(url)
+  .then((res) => res.status)
+  .catch((err) => console.log(err)); */
