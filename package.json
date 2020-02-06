@@ -13,6 +13,7 @@
     "test": "jest --coverage",
     "start": "serve src/"
   },
+  "bin": { "md-links": "./mdLinkCLI.js" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PaolaS2992/LIM011-fe-md-links.git"

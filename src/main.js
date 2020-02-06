@@ -159,15 +159,15 @@ export const arrLinksValidate = (html, pathAbsolute) => {
   const nuevo = arrObj.map((elemento) => {
     return statusHttp(elemento.href)
       .then((resHttp) => {
-        let msn = '';
+        /* let msn = '';
         if (resHttp.estado === 200) {
           msn = resHttp.text;
         } else {
           msn = resHttp.text;
-        }
+        } */
         const obj = {
           status: resHttp.estado,
-          message: msn,
+          message: resHttp.text,
         };
         const newObj = Object.assign(elemento, obj);
         return newObj;
@@ -219,12 +219,41 @@ console.log(mdLink5(directorio, { validate: true }).then((e) => console.log('Soy
 // Funcion Enrutador.
 export const mdLinks = (path, options) => {
   if (options.validate === true) {
-    return mdLink5(path).then((r) => r);
+    return mdLink5(path); // Ya retorna una promesa, no es necesario colocar then.
   }
   if (options.validate === false) {
-    return mdLink3(path).then((r) => r);
+    return mdLink3(path);
   }
 };
 // PREGUNTAR: Sobre el valor de retorno, tiene que ser en promesas? porque el mi funcion sale promise {pendiente}.
 
 // console.log('Funcion Principal: ', mdLinks(directorio, { validate: true }).then((r) => console.log(r)));
+
+export const stats = (array) => {
+  const newArray = [];
+  array.forEach((element) => {
+    newArray.push(element.href);
+  });
+  const mySet = new Set(newArray);
+  const resUnique = [...mySet].length;
+  const resTotal = array.length;
+  const objStats = {
+    total: resTotal,
+    unique: resUnique,
+  };
+  return objStats;
+};
+
+export const validate = (array) => {
+  const newArray = [];
+  array.forEach((element) => {
+    if (element.message === 'fail') {
+      newArray.push(element.message);
+    }
+  });
+  return newArray.length;
+};
+
+// Prueba:
+/* const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
+console.log('Funcion stats: ', stats(directorio).then((r) => console.log(r))); */

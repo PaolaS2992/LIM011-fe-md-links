@@ -64,7 +64,7 @@ export const converterHtml = (documentMnd) => {
 
 /* ----------- FETCH ----------- */
 
-export const statusHttp = (url) => fetch(url)
+/* export const statusHttp = (url) => fetch(url)
   .then((res) => {
     const obj = {
       estado: res.status,
@@ -72,13 +72,25 @@ export const statusHttp = (url) => fetch(url)
     };
     return obj;
   })
-  .catch((err) => console.log(err));
-
-
-// Status URL. // Agregar el array de obj de 3 y que devuelva 5 (incuye status, y el otro x)
-/* export const statusHttp = (arrLinks) => fetch(url)
-  .then((res) => res.status)
   .catch((err) => console.log(err)); */
 
-/* const link = 'https://nodejs.org/api/fs.html';
-statusHttp(link).then((e) => console.log(e)); */
+export const statusHttp = (url) => fetch(url)
+  .then((res) => {
+    let mensaje = '';
+    if (res.ok) {
+      mensaje = 'OK';
+    }
+    if (res.ok === false) {
+      mensaje = 'fail';
+    }
+    const obj = {
+      estado: res.status,
+      text: mensaje,
+    };
+    return obj;
+  })
+  .catch((err) => console.log(err));
+
+/* statusHttp('https://es.wikipedia.org/wiki/Markdown/12345')
+  .then((r) => console.log(r));
+ */
