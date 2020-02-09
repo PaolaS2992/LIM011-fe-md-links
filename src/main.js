@@ -4,7 +4,7 @@ import {
 } from './app.js';
 
 //  1. Devuelve un array de documentos Markdown - "Funcion recursiva".
-export const arrMarkdown = (pathAbsolute) => verifyDirectory(pathAbsolute)
+export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
   .then((directory) => {
     let newArray = []; // Array de los path.
     if (directory === true) {
@@ -16,12 +16,12 @@ export const arrMarkdown = (pathAbsolute) => verifyDirectory(pathAbsolute)
             if (verifyExtension(newPath) === '.md') {
               newArray.push(newPath);
             } else {
-              arrayPromise.push(arrMarkdown(newPath));
+              arrayPromise.push(getPathMd(newPath));
             }
           });
-          return Promise.all(arrayPromise).then((responsepromesa) => {
-            responsepromesa.forEach((respuesta) => {
-              newArray = newArray.concat(respuesta);
+          return Promise.all(arrayPromise).then((responsePromesa) => {
+            responsePromesa.forEach((response) => {
+              newArray = newArray.concat(response);
             });
             return newArray;
           });
@@ -31,13 +31,13 @@ export const arrMarkdown = (pathAbsolute) => verifyDirectory(pathAbsolute)
       newArray.push(pathAbsolute);
     }
     return newArray; // RETURN - Finalizar then de una promesa
-  });
+  }).catch((err) => err);
 
-/* // Prueba:
-const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
+// Prueba:
+/* const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
 // const directorio1 = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
 
-arrMarkdown(directorio)
+getPathMd(directorio)
   .then((res) => console.log('then: ', res))
   .catch((err) => console.log(err)); */
 
@@ -47,8 +47,7 @@ export const renderHtml = (documentMd) => readDocument(documentMd)
     const documentHtml = converterHtml(result);
     // console.log(typeof html);
     return documentHtml;
-  })
-  .catch((e) => console.log(e));
+  }).catch((err) => err);
 
 /* // Prueba:
 const documentMd = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
@@ -56,20 +55,16 @@ renderHtml(documentMd).then((e) => console.log('Estoy abajo : ', e));
 */
 
 // 3. Devuelve un ARRAY DE OBJETOS con los LINKS.
-export const anchorHtml = (documentHtml) => {
+
+export const arrLink = (documentHtml, pathAbsolute) => {
   const firstPartition = documentHtml.split('<a ');
   const arrAnchor = [];
   firstPartition.forEach((ele) => {
     const secondPartition = ele.split('</a>');
     if (secondPartition.length === 2) arrAnchor.push(secondPartition.splice(0, 1));
   });
-  return arrAnchor;
-};
-
-export const arrLinks = (hrefText, pathAbsolute) => {
-  const arrHrefText = anchorHtml(hrefText);
   const arrObj = [];
-  arrHrefText.forEach((ele) => {
+  arrAnchor.forEach((ele) => {
     const string = ele[0];
     const startHref = string.indexOf('"', 0) + 1;
     const endHref = string.indexOf('>', 0) - 1;
@@ -95,9 +90,8 @@ const templateString1 = `
   <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
   <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
   `;
-// console.log(anchorHtml(templateString));
 // console.log('arrLinks: ', arrLinks(templateString).then((res) => console.log(res)));
-console.log('arrLinks: ', arrLinks(templateString1)); */
+console.log('arrLinks: ', arrLink(templateString1)); */
 
 // 4. Devuelve una ruta absoluta - ASINCRONO.***
 export const isAbsolute = (path) => {
@@ -109,38 +103,21 @@ export const isAbsolute = (path) => {
 
 // Prueba: console.log(isAbsolute('./'));
 
-// 5. Funciòn MdLinks: Desde archivos *.md
-export const mdLinkX = (pathAbsolute) => {
-  return arrMarkdown(pathAbsolute)
-    .then((docMd) => {
-      let newArray = [];
-      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
-        .then((html) => arrLinks(html, pathAbsolute)));
-      return Promise.all(newMap).then((responseMap) => {
-        responseMap.forEach((respuesta) => {
-          newArray = newArray.concat(respuesta);
-        });
-        return newArray;
-      });
-    })
-    .catch((e) => console.log(e));
-};
-
-// Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
-export const mdLink3 = (path) => {
+// 5. Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
+export const getMdLink = (path) => {
   const pathAbsolute = isAbsolute(path);
-  return arrMarkdown(pathAbsolute)
-    .then((docMd) => {
+  return getPathMd(pathAbsolute)
+    .then((arrMd) => {
       let newArray = [];
-      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
-        .then((html) => arrLinks(html, pathAbsolute)));
-      return Promise.all(newMap).then((responseMap) => {
-        responseMap.forEach((respuesta) => {
-          newArray = newArray.concat(respuesta);
+      const newMap = arrMd.map((docMd) => renderHtml(docMd)
+        .then((docHtml) => arrLink(docHtml, pathAbsolute)));
+      return Promise.all(newMap).then((links) => {
+        links.forEach((link) => {
+          newArray = newArray.concat(link);
         });
         return newArray;
       });
-    }).catch((e) => console.log(e));
+    }).catch((err) => err);
 };
 
 /* // Prueba:
@@ -153,29 +130,27 @@ console.log(mdLink3(directorio).then((e) => console.log('Soy de 3 links: !!!', e
 
 // 6. Funcion que devuelve 5 propiedades de un obj a partir de los 3 que ya venia teniendo.
 
-export const arrLinksValidate = (html, pathAbsolute) => {
-  const arrObj = arrLinks(html, pathAbsolute);
+export const arrLinkValidate = (docHtml, pathAbsolute) => {
+  const arrObj = arrLink(docHtml, pathAbsolute);
   let newArray = [];
-  const nuevo = arrObj.map((elemento) => {
-    return statusHttp(elemento.href)
-      .then((resHttp) => {
-        /* let msn = '';
+  const arrObjValidate = arrObj.map((element) => statusHttp(element.href)
+    .then((resHttp) => {
+      /* let msn = '';
         if (resHttp.estado === 200) {
           msn = resHttp.text;
         } else {
           msn = resHttp.text;
         } */
-        const obj = {
-          status: resHttp.estado,
-          message: resHttp.text,
-        };
-        const newObj = Object.assign(elemento, obj);
-        return newObj;
-      });
-  });
-  return Promise.all(nuevo).then((responsePromise) => {
-    responsePromise.forEach((respuesta) => {
-      newArray = newArray.concat(respuesta);
+      const obj = {
+        status: resHttp.status,
+        message: resHttp.text,
+      };
+      const newObj = Object.assign(element, obj);
+      return newObj;
+    }));
+  return Promise.all(arrObjValidate).then((responsePromise) => {
+    responsePromise.forEach((response) => {
+      newArray = newArray.concat(response);
     });
     return newArray;
   });
@@ -193,20 +168,20 @@ const templateString = `
 console.log(arrLinksValidate(templateString, 'rutaMd').then((e) => console.log(e))); */
 
 // Funcion MdLinks: Desde la ruta absoluta - 5 propiedades.
-export const mdLink5 = (path) => {
+export const getMdLinkValidate = (path) => {
   const pathAbsolute = isAbsolute(path);
-  return arrMarkdown(pathAbsolute)
-    .then((docMd) => {
+  return getPathMd(pathAbsolute)
+    .then((arrMd) => {
       let newArray = [];
-      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
-        .then((html) => arrLinksValidate(html, pathAbsolute)));
+      const newMap = arrMd.map((docMd) => renderHtml(docMd)
+        .then((docHtml) => arrLinkValidate(docHtml, pathAbsolute)));
       return Promise.all(newMap).then((responseMap) => {
-        responseMap.forEach((respuesta) => {
-          newArray = newArray.concat(respuesta);
+        responseMap.forEach((response) => {
+          newArray = newArray.concat(response);
         });
         return newArray;
       });
-    }).catch((e) => console.log(e));
+    }).catch((err) => err);
 };
 
 /* // Prueba:
@@ -216,16 +191,7 @@ const ruta = './';
 
 console.log(mdLink5(directorio, { validate: true }).then((e) => console.log('Soy de 5 links: ', e))); */
 
-// Funcion Enrutador.
-export const mdLinks = (path, options) => {
-  if (options.validate === true) {
-    return mdLink5(path); // Ya retorna una promesa, no es necesario colocar then.
-  }
-  if (options.validate === false) {
-    return mdLink3(path);
-  }
-};
-// PREGUNTAR: Sobre el valor de retorno, tiene que ser en promesas? porque el mi funcion sale promise {pendiente}.
+export const mdLinks = (path, options) => (options.validate ? getMdLinkValidate(path) : getMdLink(path));
 
 // console.log('Funcion Principal: ', mdLinks(directorio, { validate: true }).then((r) => console.log(r)));
 
@@ -247,13 +213,37 @@ export const stats = (array) => {
 export const validate = (array) => {
   const newArray = [];
   array.forEach((element) => {
-    if (element.message === 'fail') {
+    if (element.message !== 'OK') {
       newArray.push(element.message);
     }
   });
   return newArray.length;
 };
 
+/*
 // Prueba:
-/* const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
-console.log('Funcion stats: ', stats(directorio).then((r) => console.log(r))); */
+const href = [
+  {
+    href: 'https://nodejs.org/',
+    text: 'Node.js',
+    file: '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas',
+    status: 200,
+    message: 'fail',
+  },
+  {
+    href: 'https://daringfireball.net/projects/markdown/syntaxA',
+    text: 'markdown',
+    file: '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas',
+    status: 200,
+    message: 'fail',
+  },
+  {
+    href: 'https://daringfireball.net/projects/markdown/syntax',
+    text: 'markdown',
+    file: '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas',
+    status: 200,
+    message: 'OK',
+  },
+];
+
+// console.log('Funcion stats: ', validate(href)); */

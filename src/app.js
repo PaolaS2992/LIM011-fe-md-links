@@ -31,11 +31,11 @@ export const verifyDirectory = (ruta) => new Promise((resolve, reject) => {
   });
 });
 
-// Vaidar Ruta existente.
-export const existPathAbsolute = (ruta) => fs.existsSync(ruta);
+// Validar Ruta existente.
+// export const existPathAbsolute = (ruta) => fs.existsSync(ruta);
 
 // Validar si es directorio. SINCRONO.
-export const verifyDirectory1 = (ruta) => fs.lstatSync(ruta).isDirectory();
+// export const verifyDirectory1 = (ruta) => fs.lstatSync(ruta).isDirectory();
 
 // Leer Directorio o carpeta.
 export const readDirectory = (ruta) => new Promise((resolve, reject) => {
@@ -84,13 +84,12 @@ export const statusHttp = (url) => fetch(url)
       mensaje = 'fail';
     }
     const obj = {
-      estado: res.status,
+      status: res.status,
       text: mensaje,
     };
     return obj;
   })
-  .catch((err) => console.log(err));
+  .catch((err) => err);
 
-/* statusHttp('https://es.wikipedia.org/wiki/Markdown/12345')
-  .then((r) => console.log(r));
- */
+/* statusHttp('https://es.wikipedia.org/wiki/Markdown')
+  .then((r) => console.log(r)); */

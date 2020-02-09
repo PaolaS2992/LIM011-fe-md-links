@@ -13,7 +13,12 @@
     "test": "jest --coverage",
     "start": "serve src/"
   },
-  "bin": { "md-links": "./mdLinkCLI.js" },
+  "jest": {
+    "automock": false
+  },
+  "bin": {
+    "md-links": "./mdLinkCLI.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PaolaS2992/LIM011-fe-md-links.git"
@@ -36,6 +41,7 @@
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-jest": "^23.6.0",
     "jest": "^24.9.0",
+    "jest-fetch-mock": "^3.0.1",
     "serve": "^11.3.0"
   },
   "dependencies": {

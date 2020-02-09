@@ -1,31 +1,61 @@
-import { verifyPathAbsolute, converterAbsolute, verifyDirectory } from '../src/app.js';
+import {
+  verifyPathAbsolute, converterAbsolute, unionPath, verifyExtension,
+  verifyDirectory, readDirectory, readDocument, converterHtml,
+} from '../src/app.js';
 
-describe('verifyPathAbsolute', () => {
-  it('deberia ser una funcion', () => {
-    expect(typeof verifyPathAbsolute).toBe('function');
+/* const fetch = require('jest-fetch-mock');
+
+// const pt =
+
+fetch.mockResponse('ok');
+
+describe('Funcion Fetch', () => {}); */
+
+describe('Funciones Path', () => {
+  it('Deberia validar si es Ruta Absoluta', () => {
+    expect(verifyPathAbsolute('/test')).toEqual(true);
   });
-  it('deberia darme un resultado booleano TRUE', () => {
-    const ruta = '/foo/bar';
-    const rpta = true;
-    expect(verifyPathAbsolute(ruta)).toEqual(rpta);
+
+  it('Deberia convertir una ruta relativa en absoluta', () => {
+    expect(converterAbsolute('./test/test.md')).toEqual(`${process.cwd()}/test/test.md`);
   });
-  it('deberia darme un resultado booleano FALSE', () => {
-    const ruta1 = 'qux/';
-    const rpta2 = false;
-    expect(verifyPathAbsolute(ruta1)).toEqual(rpta2);
+
+  it('Deberia unir ruta absoluta con relativa', () => {
+    expect(unionPath(process.cwd(), './test/test.md')).toEqual(`${process.cwd()}/test/test.md`);
+  });
+
+  it('Deberia devolver la extencion *.md', () => {
+    expect(verifyExtension('test.md')).toEqual('.md');
   });
 });
 
-describe('converterAbsolute', () => {
-  it('deberia convertir una ruta relativa en absoluta', () => {
-    const pathRelative = './README.md';
-    const pathAbsolute = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
-    expect(converterAbsolute(pathRelative)).toEqual(pathAbsolute);
+describe('Funciones File System', () => {
+  const pathAbsolute = './test/test.md';
+  test('Deberia validar si es directorio', () => {
+    expect.assertions(1);
+    return verifyDirectory(pathAbsolute).then((path) => {
+      expect(path).toEqual(false);
+    }).catch((error) => expect(error).toThrow(console.log(error)));
   });
+  // Preguntar.
+  /* test('verifyDirectory', () => expect(verifyDirectory('./')).resolves.toBe(true));
+  test('error', () => expect(verifyDirectory('./test/')).rejects.toMatch('error')); */
+
+  test('Deberia leer el directorio', () => readDirectory('./test')
+    .then((response) => {
+      expect(response).toEqual(['app.spec.js', 'cli.spec.js', 'main.spec.js', 'test.md']);
+    }));
+
+  test('Deberia leer archivo Markdown', () => readDocument('./test/test.md')
+    .then((response) => {
+      expect(response).toEqual('[Node.js](https://nodejs.org/es/)');
+    }));
 });
 
-describe('verifyDirectory', () => {
-  it('Deberia verificar si es directorio', () => {
-    expect(verifyDirectory('../README.md')).toEqual(false);
+describe('Funciones Markdown It', () => {
+  it('Deberia convertir un archivo Markdown tn HTML', () => {
+    const docMd = '[Node.js](https://nodejs.org/es/) es un entorno de ejecución para JavaScript';
+    const docHtml = '<p><a href="https://nodejs.org/es/">Node.js</a> es un entorno de ejecución para JavaScript</p>\n';
+    expect(converterHtml(docMd)).toEqual(docHtml);
   });
 });

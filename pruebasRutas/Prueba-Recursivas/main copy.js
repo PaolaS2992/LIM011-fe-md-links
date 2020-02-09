@@ -4,7 +4,7 @@ import {
 } from './app.js';
 
 //  1. Devuelve un array de documentos Markdown - "Funcion recursiva".
-export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
+export const arrMarkdown = (pathAbsolute) => verifyDirectory(pathAbsolute)
   .then((directory) => {
     let newArray = []; // Array de los path.
     if (directory === true) {
@@ -16,12 +16,12 @@ export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
             if (verifyExtension(newPath) === '.md') {
               newArray.push(newPath);
             } else {
-              arrayPromise.push(getPathMd(newPath));
+              arrayPromise.push(arrMarkdown(newPath));
             }
           });
-          return Promise.all(arrayPromise).then((responsePromesa) => {
-            responsePromesa.forEach((response) => {
-              newArray = newArray.concat(response);
+          return Promise.all(arrayPromise).then((responsepromesa) => {
+            responsepromesa.forEach((respuesta) => {
+              newArray = newArray.concat(respuesta);
             });
             return newArray;
           });
@@ -33,11 +33,11 @@ export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
     return newArray; // RETURN - Finalizar then de una promesa
   }).catch((err) => err);
 
-// Prueba:
-/* const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
+/* // Prueba:
+const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/pruebasRutas';
 // const directorio1 = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/README.md';
 
-getPathMd(directorio)
+arrMarkdown(directorio)
   .then((res) => console.log('then: ', res))
   .catch((err) => console.log(err)); */
 
@@ -55,16 +55,20 @@ renderHtml(documentMd).then((e) => console.log('Estoy abajo : ', e));
 */
 
 // 3. Devuelve un ARRAY DE OBJETOS con los LINKS.
-
-export const arrLink = (documentHtml, pathAbsolute) => {
+export const anchorHtml = (documentHtml) => {
   const firstPartition = documentHtml.split('<a ');
   const arrAnchor = [];
   firstPartition.forEach((ele) => {
     const secondPartition = ele.split('</a>');
     if (secondPartition.length === 2) arrAnchor.push(secondPartition.splice(0, 1));
   });
+  return arrAnchor;
+};
+
+export const arrLinks = (hrefText, pathAbsolute) => {
+  const arrHrefText = anchorHtml(hrefText);
   const arrObj = [];
-  arrAnchor.forEach((ele) => {
+  arrHrefText.forEach((ele) => {
     const string = ele[0];
     const startHref = string.indexOf('"', 0) + 1;
     const endHref = string.indexOf('>', 0) - 1;
@@ -90,8 +94,9 @@ const templateString1 = `
   <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
   <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
   `;
+// console.log(anchorHtml(templateString));
 // console.log('arrLinks: ', arrLinks(templateString).then((res) => console.log(res)));
-console.log('arrLinks: ', arrLink(templateString1)); */
+console.log('arrLinks: ', arrLinks(templateString1)); */
 
 // 4. Devuelve una ruta absoluta - ASINCRONO.***
 export const isAbsolute = (path) => {
@@ -121,16 +126,16 @@ export const isAbsolute = (path) => {
 }; */
 
 // Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
-export const getMdLink = (path) => {
+export const mdLink3 = (path) => {
   const pathAbsolute = isAbsolute(path);
-  return getPathMd(pathAbsolute)
-    .then((arrMd) => {
+  return arrMarkdown(pathAbsolute)
+    .then((docMd) => {
       let newArray = [];
-      const newMap = arrMd.map((docMd) => renderHtml(docMd)
-        .then((docHtml) => arrLink(docHtml, pathAbsolute)));
-      return Promise.all(newMap).then((links) => {
-        links.forEach((link) => {
-          newArray = newArray.concat(link);
+      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
+        .then((html) => arrLinks(html, pathAbsolute)));
+      return Promise.all(newMap).then((responseMap) => {
+        responseMap.forEach((respuesta) => {
+          newArray = newArray.concat(respuesta);
         });
         return newArray;
       });
@@ -147,10 +152,10 @@ console.log(mdLink3(directorio).then((e) => console.log('Soy de 3 links: !!!', e
 
 // 6. Funcion que devuelve 5 propiedades de un obj a partir de los 3 que ya venia teniendo.
 
-export const arrLinkValidate = (docHtml, pathAbsolute) => {
-  const arrObj = arrLink(docHtml, pathAbsolute);
+export const arrLinksValidate = (html, pathAbsolute) => {
+  const arrObj = arrLinks(html, pathAbsolute);
   let newArray = [];
-  const arrObjValidate = arrObj.map((element) => statusHttp(element.href)
+  const nuevo = arrObj.map((elemento) => statusHttp(elemento.href)
     .then((resHttp) => {
       /* let msn = '';
         if (resHttp.estado === 200) {
@@ -159,15 +164,15 @@ export const arrLinkValidate = (docHtml, pathAbsolute) => {
           msn = resHttp.text;
         } */
       const obj = {
-        status: resHttp.status,
+        status: resHttp.estado,
         message: resHttp.text,
       };
-      const newObj = Object.assign(element, obj);
+      const newObj = Object.assign(elemento, obj);
       return newObj;
     }));
-  return Promise.all(arrObjValidate).then((responsePromise) => {
-    responsePromise.forEach((response) => {
-      newArray = newArray.concat(response);
+  return Promise.all(nuevo).then((responsePromise) => {
+    responsePromise.forEach((respuesta) => {
+      newArray = newArray.concat(respuesta);
     });
     return newArray;
   });
@@ -185,16 +190,16 @@ const templateString = `
 console.log(arrLinksValidate(templateString, 'rutaMd').then((e) => console.log(e))); */
 
 // Funcion MdLinks: Desde la ruta absoluta - 5 propiedades.
-export const getMdLinkValidate = (path) => {
+export const mdLink5 = (path) => {
   const pathAbsolute = isAbsolute(path);
-  return getPathMd(pathAbsolute)
-    .then((arrMd) => {
+  return arrMarkdown(pathAbsolute)
+    .then((docMd) => {
       let newArray = [];
-      const newMap = arrMd.map((docMd) => renderHtml(docMd)
-        .then((docHtml) => arrLinkValidate(docHtml, pathAbsolute)));
+      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
+        .then((html) => arrLinksValidate(html, pathAbsolute)));
       return Promise.all(newMap).then((responseMap) => {
-        responseMap.forEach((response) => {
-          newArray = newArray.concat(response);
+        responseMap.forEach((respuesta) => {
+          newArray = newArray.concat(respuesta);
         });
         return newArray;
       });
@@ -208,14 +213,12 @@ const ruta = './';
 
 console.log(mdLink5(directorio, { validate: true }).then((e) => console.log('Soy de 5 links: ', e))); */
 
-// Funcion Enrutador. SALE ERROR DE RETURN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Funcion Enrutador.
 // eslint-disable-next-line consistent-return
-/* export const mdLinks = (path, options) => {
+export const mdLinks = (path, options) => {
   if (options.validate === true) return mdLink5(path);
   if (options.validate === false) return mdLink3(path);
-}; */
-
-export const mdLinks = (path, options) => (options.validate ? getMdLinkValidate(path) : getMdLink(path));
+};
 
 // console.log('Funcion Principal: ', mdLinks(directorio, { validate: true }).then((r) => console.log(r)));
 
