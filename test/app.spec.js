@@ -1,15 +1,26 @@
 import {
   verifyPathAbsolute, converterAbsolute, unionPath, verifyExtension,
-  verifyDirectory, readDirectory, readDocument, converterHtml,
+  verifyDirectory, readDirectory, readDocument, converterHtml, statusHttp,
 } from '../src/app.js';
 
-/* const fetch = require('jest-fetch-mock');
+import { fetch } from '../__mocks__/fetch-mock.js';
 
-// const pt =
+describe('Funcion Fetch', () => {
+  const myFetch = fetch;
+  myFetch
+    .mock('https://nodejs.org/es/', 200)
+    .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
 
-fetch.mockResponse('ok');
+  test('Deberia validar Link OK', () => statusHttp('https://nodejs.org/es/')
+    .then((response) => {
+      expect(response.status).toEqual(200);
+    }));
 
-describe('Funcion Fetch', () => {}); */
+  test('Deberia validar Link fail', () => statusHttp('https://jestjs.io/docs/en/manual-mocks/examples')
+    .then((response) => {
+      expect(response.status).toEqual(404);
+    }));
+});
 
 describe('Funciones Path', () => {
   it('Deberia validar si es Ruta Absoluta', () => {
