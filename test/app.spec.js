@@ -3,16 +3,24 @@ import {
   verifyDirectory, readDirectory, readDocument, converterHtml, statusHttp,
 } from '../src/app.js';
 
-import { fetch } from '../__mocks__/fetch-mock.js';
 
-describe('Funcion Fetch', () => {
-  const myFetch = fetch;
-  myFetch
+const fetchMock = require('../__mocks__/node-fetch');
+
+fetchMock.config.sendAsJson = false;
+// fetchMock.config.fallbackToNetwork = true;
+
+jest.mock('node-fetch');
+
+// eslint-disable-next-line jest/no-focused-tests
+describe.only('Funcion Fetch', () => {
+  fetchMock
     .mock('https://nodejs.org/es/', 200)
     .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
-
+  /* console.log(myFetch);
+  console.log(myFetch.routes[0].response); */
   test('Deberia validar Link OK', () => statusHttp('https://nodejs.org/es/')
     .then((response) => {
+      console.log(response);
       expect(response.status).toEqual(200);
     }));
 

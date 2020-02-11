@@ -5,6 +5,14 @@ import {
 
 const path = require('path');
 
+const fetchMock = require('../__mocks__/node-fetch');
+
+fetchMock.config.sendAsJson = false;
+
+fetchMock
+  .mock('https://nodejs.org/es/', 200)
+  .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
+
 describe('Funcion getPathMd', () => {
   const arrMd = ['test/test.md'];
   test('Deberia devolver un array *.md', () => getPathMd('./test').then((response) => {
@@ -82,41 +90,15 @@ describe('Funcion getMdLink', () => {
 
 describe('Funcion arrLinkValidate', () => {
   const dataInput = `
-  <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
-  <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
-  <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
-  <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
-  `;
+  <li><a href="https://nodejs.org/es/">Node.js</a></li>`;
   const dataOutput = [
     {
-      href: 'https://nodejs.org/es/about/',
-      text: 'Acerca de Node.js - Documentación oficial',
+      href: 'https://nodejs.org/es/',
+      text: 'Node.js',
       file: process.cwd(),
       status: 200,
       message: 'OK',
-    },
-    {
-      href: 'https://nodejs.org/api/fs.html',
-      text: 'Node.js file system - Documentación oficial',
-      file: process.cwd(),
-      status: 200,
-      message: 'OK',
-    },
-    {
-      href: 'https://nodejs.org/es/about/',
-      text: 'Acerca de Node.js - Documentación oficial',
-      file: process.cwd(),
-      status: 200,
-      message: 'OK',
-    },
-    {
-      href: 'https://nodejs.org/api/fs.html',
-      text: 'Node.js file system - Documentación oficial',
-      file: process.cwd(),
-      status: 200,
-      message: 'OK',
-    },
-  ];
+    }];
   test('Deberia devolver la validacion y poder agregar la propiedad status y message', () => arrLinkValidate(dataInput, process.cwd())
     .then((response) => {
       expect(response).toEqual(dataOutput);
