@@ -14,7 +14,7 @@
     "start": "serve src/"
   },
   "bin": {
-    "md-links": "./mdLinkCLI.js"
+    "md-links": "lib/mdLinkCLI.js"
   },
   "repository": {
     "type": "git",

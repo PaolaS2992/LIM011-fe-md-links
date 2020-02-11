@@ -17,7 +17,6 @@ export const cliOptions = (process) => {
 const cliPath = process.argv[2];
 const cliOption = cliOptions(process.argv);
 
-
 if (cliPath === undefined) {
   console.log('Ingresar ruta !');
 } else {

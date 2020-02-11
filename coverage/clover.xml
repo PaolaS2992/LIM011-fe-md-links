@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1581435141859" clover="3.2.0">
-  <project timestamp="1581435141859" name="All files">
+<coverage generated="1581452606913" clover="3.2.0">
+  <project timestamp="1581452606913" name="All files">
     <metrics statements="150" coveredstatements="144" conditionals="36" coveredconditionals="33" methods="63" coveredmethods="57" elements="249" coveredelements="234" complexity="0" loc="150" ncloc="150" packages="1" files="3" classes="3"/>
     <file name="app.js" path="/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/00-Laboratoria/04-LIM011-fe-md-links/LIM011-fe-md-links/src/app.js">
       <metrics statements="33" coveredstatements="32" conditionals="10" coveredconditionals="7" methods="17" coveredmethods="16"/>

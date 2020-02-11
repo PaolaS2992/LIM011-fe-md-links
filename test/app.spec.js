@@ -9,9 +9,9 @@ const path = require('path');
 
 const fetchMock = require('../__mocks__/node-fetch');
 
-fetchMock.config.sendAsJson = false;
+// fetchMock.config.sendAsJson = false;
 
-jest.mock('node-fetch');
+// jest.mock('node-fetch');
 
 /* Fin Fetch */
 
