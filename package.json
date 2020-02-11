@@ -2,7 +2,7 @@
   "name": "md-links",
   "version": "0.0.1",
   "description": "Testeador de links de archivos Markdown",
-  "main": "src/index.html",
+  "main": "src/main.js",
   "directories": {
     "test": "test"
   },
