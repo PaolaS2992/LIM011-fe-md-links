@@ -2,6 +2,8 @@ import { cli } from '../src/cli.js';
 
 const path = require('path');
 
+/* Inicio Fetch */
+
 const fetchMock = require('../__mocks__/node-fetch');
 
 fetchMock.config.sendAsJson = false;
@@ -9,6 +11,8 @@ fetchMock.config.sendAsJson = false;
 fetchMock
   .mock('https://nodejs.org/es/', 200)
   .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
+
+/* Fin Fetch */
 
 describe('Funcion cliOptions', () => {
   const pathAbsolute = path.join(process.cwd(), 'test', 'test.md');
@@ -43,11 +47,11 @@ describe('Funcion cliOptions', () => {
       expect(response).toEqual(strStats);
     }));
   test('Option { validate: true } --stats --validate', () => cli(pathAbsolute, '--stats--validate', { validate: true })
-    .then('', (response) => {
+    .then('--stats--validate', (response) => {
       expect(response).toEqual(strStatsValidate);
     }));
   test('Option { validate: false }', () => cli(pathAbsolute, { validate: false })
-    .then('', (response) => {
+    .then('Solo Path', (response) => {
       expect(response).toEqual(string);
     }));
 });

@@ -3,21 +3,23 @@ import {
   verifyDirectory, readDirectory, readDocument, converterHtml, statusHttp,
 } from '../src/app.js';
 
+const path = require('path');
+
+/* Inicio Fetch */
 
 const fetchMock = require('../__mocks__/node-fetch');
 
 fetchMock.config.sendAsJson = false;
-// fetchMock.config.fallbackToNetwork = true;
 
 jest.mock('node-fetch');
 
-// eslint-disable-next-line jest/no-focused-tests
-describe.only('Funcion Fetch', () => {
+/* Fin Fetch */
+
+describe('Funcion Fetch', () => {
   fetchMock
     .mock('https://nodejs.org/es/', 200)
     .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
-  /* console.log(myFetch);
-  console.log(myFetch.routes[0].response); */
+
   test('Deberia validar Link OK', () => statusHttp('https://nodejs.org/es/')
     .then((response) => {
       console.log(response);
@@ -32,15 +34,20 @@ describe.only('Funcion Fetch', () => {
 
 describe('Funciones Path', () => {
   it('Deberia validar si es Ruta Absoluta', () => {
-    expect(verifyPathAbsolute('/test')).toEqual(true);
+    expect(verifyPathAbsolute(process.cwd())).toEqual(true);
   });
 
   it('Deberia convertir una ruta relativa en absoluta', () => {
-    expect(converterAbsolute('./test/test.md')).toEqual(`${process.cwd()}/test/test.md`);
+    const pathRelative = path.join('.', 'test', 'test.md');
+    const pathAbsolute = path.join(process.cwd(), 'test', 'test.md');
+    expect(converterAbsolute(pathRelative)).toEqual(pathAbsolute);
   });
 
   it('Deberia unir ruta absoluta con relativa', () => {
-    expect(unionPath(process.cwd(), './test/test.md')).toEqual(`${process.cwd()}/test/test.md`);
+    const directoryActual = path.join(process.cwd(), 'test');
+    const file = 'test.md';
+    const pathEnd = path.join(directoryActual, file);
+    expect(unionPath(directoryActual, file)).toEqual(pathEnd);
   });
 
   it('Deberia devolver la extencion *.md', () => {
@@ -49,26 +56,40 @@ describe('Funciones Path', () => {
 });
 
 describe('Funciones File System', () => {
-  const pathAbsolute = './test/test.md';
   test('Deberia validar si es directorio', () => {
     expect.assertions(1);
-    return verifyDirectory(pathAbsolute).then((path) => {
-      expect(path).toEqual(false);
+    return verifyDirectory(process.cwd()).then((response) => {
+      expect(response).toEqual(true);
     }).catch((error) => expect(error).toThrow(console.log(error)));
   });
-  // Preguntar.
-  /* test('verifyDirectory', () => expect(verifyDirectory('./')).resolves.toBe(true));
-  test('error', () => expect(verifyDirectory('./test/')).rejects.toMatch('error')); */
 
-  test('Deberia leer el directorio', () => readDirectory('./test')
-    .then((response) => {
-      expect(response).toEqual(['app.spec.js', 'cli.spec.js', 'main.spec.js', 'test.md']);
-    }));
+  /* OPCION 01:
+    test('verifyDirectory catch', () => verifyDirectory('test').catch((err) => {
+    console.log('desde cath: ', err);
+    expect(err).toMatch('error');
+  })); */
 
-  test('Deberia leer archivo Markdown', () => readDocument('./test/test.md')
-    .then((response) => {
-      expect(response).toEqual('[Node.js](https://nodejs.org/es/)');
-    }));
+  /* OPCION 02:
+    test('verifyDirectory', () => expect(verifyDirectory('./')).resolves.toBe(true));
+    test('error', () => expect(verifyDirectory('./test/')).rejects.toMatch('error')); */
+
+  test('Deberia leer el directorio', () => {
+    const pathDirectory = path.join(process.cwd(), 'test');
+    const contentDirectory = ['app.spec.js', 'cli.spec.js', 'main.spec.js', 'test.md'];
+    return readDirectory(pathDirectory)
+      .then((response) => {
+        expect(response).toEqual(contentDirectory);
+      });
+  });
+
+  test('Deberia leer archivo Markdown', () => {
+    const pathMarkdown = path.join(process.cwd(), 'test', 'test.md');
+    const contentMarkdown = '[Node.js](https://nodejs.org/es/)';
+    return readDocument(pathMarkdown)
+      .then((response) => {
+        expect(response).toEqual(contentMarkdown);
+      });
+  });
 });
 
 describe('Funciones Markdown It', () => {

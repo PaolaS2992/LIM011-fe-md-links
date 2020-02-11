@@ -5,6 +5,8 @@ import {
 
 const path = require('path');
 
+/* Inicio Fetch */
+
 const fetchMock = require('../__mocks__/node-fetch');
 
 fetchMock.config.sendAsJson = false;
@@ -13,16 +15,21 @@ fetchMock
   .mock('https://nodejs.org/es/', 200)
   .mock('https://jestjs.io/docs/en/manual-mocks/examples', 404);
 
+/* Fin Fetch */
+
 describe('Funcion getPathMd', () => {
-  const arrMd = ['test/test.md'];
-  test('Deberia devolver un array *.md', () => getPathMd('./test').then((response) => {
-    expect(response).toEqual(arrMd);
-  }));
+  const pathAbsolute = path.join('.', 'test');
+  const arrMd = [path.join('test', 'test.md')];
+  test('Deberia devolver un array *.md', () => getPathMd(pathAbsolute)
+    .then((response) => {
+      expect(response).toEqual(arrMd);
+    }));
 });
 
 describe('Funcion renderHtml', () => {
+  const pathMarkdown = path.join(process.cwd(), 'test', 'test.md');
   const docHtml = '<p><a href="https://nodejs.org/es/">Node.js</a></p>\n';
-  test('Deberia convertir de *.md a *.html', () => renderHtml(path.join(process.cwd(), 'test', 'test.md'))
+  test('Deberia convertir de *.md a *.html', () => renderHtml(pathMarkdown)
     .then((response) => {
       expect(response).toEqual(docHtml);
     }));
@@ -30,34 +37,16 @@ describe('Funcion renderHtml', () => {
 
 describe('Funcion arrLink', () => {
   const dataInput = `
-  <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
-  <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
-  <li><a href="https://nodejs.org/es/about/">Acerca de Node.js - Documentación oficial</a></li>
   <li><a href="https://nodejs.org/api/fs.html">Node.js file system - Documentación oficial</a></li>
   `;
   const dataOutput = [
-    {
-      href: 'https://nodejs.org/es/about/',
-      text: 'Acerca de Node.js - Documentación oficial',
-      file: process.cwd(),
-    },
-    {
-      href: 'https://nodejs.org/api/fs.html',
-      text: 'Node.js file system - Documentación oficial',
-      file: process.cwd(),
-    },
-    {
-      href: 'https://nodejs.org/es/about/',
-      text: 'Acerca de Node.js - Documentación oficial',
-      file: process.cwd(),
-    },
     {
       href: 'https://nodejs.org/api/fs.html',
       text: 'Node.js file system - Documentación oficial',
       file: process.cwd(),
     },
   ];
-  test('Deberia devolver array de Objetos con tres propiedades', () => {
+  it('Deberia devolver array de Objetos con tres propiedades', () => {
     expect(arrLink(dataInput, process.cwd())).toEqual(dataOutput);
   });
 });
@@ -69,14 +58,14 @@ describe('Funcion isAbsolute', () => {
   test('Deberia devolver una ruta absoluta', () => {
     expect(isAbsolute(pathAbsolute)).toEqual(response);
   });
-  test('Deberia devolver una ruta absoluta2', () => {
+  test('Deberia convertir en ruta absoluta', () => {
     expect(isAbsolute(pathRelative)).toEqual(response);
   });
 });
 
 describe('Funcion getMdLink', () => {
   const pathAbsolute = path.join(process.cwd(), 'test', 'test.md');
-  const dataOutput = [
+  const arrayLink = [
     {
       href: 'https://nodejs.org/es/',
       text: 'Node.js',
@@ -84,14 +73,14 @@ describe('Funcion getMdLink', () => {
     }];
   test('Deberia devolver array de promesas con tres propiedades', () => getMdLink(pathAbsolute)
     .then((response) => {
-      expect(response).toEqual(dataOutput);
+      expect(response).toEqual(arrayLink);
     }));
 });
 
 describe('Funcion arrLinkValidate', () => {
   const dataInput = `
   <li><a href="https://nodejs.org/es/">Node.js</a></li>`;
-  const dataOutput = [
+  const arrayLinkValidation = [
     {
       href: 'https://nodejs.org/es/',
       text: 'Node.js',
@@ -101,13 +90,13 @@ describe('Funcion arrLinkValidate', () => {
     }];
   test('Deberia devolver la validacion y poder agregar la propiedad status y message', () => arrLinkValidate(dataInput, process.cwd())
     .then((response) => {
-      expect(response).toEqual(dataOutput);
+      expect(response).toEqual(arrayLinkValidation);
     }));
 });
 
 describe('Funcion getMdLinkValidate', () => {
   const pathAbsolute = path.join(process.cwd(), 'test', 'test.md');
-  const dataOutput = [
+  const arrayObjValidate = [
     {
       href: 'https://nodejs.org/es/',
       text: 'Node.js',
@@ -117,7 +106,7 @@ describe('Funcion getMdLinkValidate', () => {
     }];
   test('Deberia devolver array de Promesas con cinco propiedades ', () => getMdLinkValidate(pathAbsolute)
     .then((response) => {
-      expect(response).toEqual(dataOutput);
+      expect(response).toEqual(arrayObjValidate);
     }));
 });
 

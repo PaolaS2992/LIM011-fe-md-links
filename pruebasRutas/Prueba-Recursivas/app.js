@@ -34,6 +34,9 @@ export const verifyDirectory = (ruta) => new Promise((resolve, reject) => {
 // Validar Ruta existente.
 // export const existPathAbsolute = (ruta) => fs.existsSync(ruta);
 
+// Validar si es directorio. SINCRONO.
+// export const verifyDirectory1 = (ruta) => fs.lstatSync(ruta).isDirectory();
+
 // Leer Directorio o carpeta.
 export const readDirectory = (ruta) => new Promise((resolve, reject) => {
   fs.readdir(ruta, (error, files) => {
@@ -61,6 +64,16 @@ export const converterHtml = (documentMnd) => {
 
 /* ----------- FETCH ----------- */
 
+/* export const statusHttp = (url) => fetch(url)
+  .then((res) => {
+    const obj = {
+      estado: res.status,
+      text: res.statusText,
+    };
+    return obj;
+  })
+  .catch((err) => console.log(err)); */
+
 export const statusHttp = (url) => fetch(url)
   .then((res) => {
     let mensaje = '';
@@ -77,3 +90,6 @@ export const statusHttp = (url) => fetch(url)
     return obj;
   })
   .catch((err) => err);
+
+/* statusHttp('https://es.wikipedia.org/wiki/Markdown')
+  .then((r) => console.log(r)); */

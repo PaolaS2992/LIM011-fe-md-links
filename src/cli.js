@@ -32,6 +32,9 @@ export const cli = (path, options) => {
       return string;
     }).catch((err) => console.log(err));
   }
+  /* if (options === '') {
+
+  } */
   return mdLinks(path, { validate: false }).then((response) => {
     let string = '';
     response.forEach((e) => {

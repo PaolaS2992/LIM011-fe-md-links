@@ -103,24 +103,7 @@ export const isAbsolute = (path) => {
 
 // Prueba: console.log(isAbsolute('./'));
 
-// 5. Funciòn MdLinks: Desde archivos *.md
-/* export const mdLinkX = (pathAbsolute) => {
-  return arrMarkdown(pathAbsolute)
-    .then((docMd) => {
-      let newArray = [];
-      const newMap = docMd.map((cadaMD) => renderHtml(cadaMD)
-        .then((html) => arrLinks(html, pathAbsolute)));
-      return Promise.all(newMap).then((responseMap) => {
-        responseMap.forEach((respuesta) => {
-          newArray = newArray.concat(respuesta);
-        });
-        return newArray;
-      });
-    })
-    .catch((e) => console.log(e));
-}; */
-
-// Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
+// 5. Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
 export const getMdLink = (path) => {
   const pathAbsolute = isAbsolute(path);
   return getPathMd(pathAbsolute)
@@ -207,13 +190,6 @@ const directorio = '/home/paolasonia/Desktop/5_LABORATORIA/En_mi_disco_local_C/0
 const ruta = './';
 
 console.log(mdLink5(directorio, { validate: true }).then((e) => console.log('Soy de 5 links: ', e))); */
-
-// Funcion Enrutador. SALE ERROR DE RETURN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// eslint-disable-next-line consistent-return
-/* export const mdLinks = (path, options) => {
-  if (options.validate === true) return mdLink5(path);
-  if (options.validate === false) return mdLink3(path);
-}; */
 
 export const mdLinks = (path, options) => (options.validate ? getMdLinkValidate(path) : getMdLink(path));
 
