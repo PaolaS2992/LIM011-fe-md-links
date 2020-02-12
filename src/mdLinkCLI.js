@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { cli } from './cli.js';
+const functionCli = require('./cli.js');
 
-export const cliOptions = (process) => {
+const cliOptions = (process) => {
   let opcion = '';
   if (process[3] === '--validate') opcion = process[3];
   if (process[3] === '--stats') opcion = process[3];
@@ -20,7 +20,7 @@ const cliOption = cliOptions(process.argv);
 if (cliPath === undefined) {
   console.log('Ingresar ruta !');
 } else {
-  cli(cliPath, cliOption)
+  functionCli.cli(cliPath, cliOption)
     .then((response) => console.log(response))
     .catch((err) => console.error(err));
 }

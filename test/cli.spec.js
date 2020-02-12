@@ -1,6 +1,6 @@
-import { cli } from '../src/cli.js';
-
 const path = require('path');
+
+const functionCli = require('../src/cli.js');
 
 /* Inicio Fetch */
 
@@ -38,19 +38,19 @@ describe('Funcion cliOptions', () => {
   Href: https://nodejs.org/es/\n
   Text: Node.js\n`;
 
-  test('Option { validate: true } --validate', () => cli(pathAbsolute, '--validate', { validate: true })
+  test('Option { validate: true } --validate', () => functionCli.cli(pathAbsolute, '--validate', { validate: true })
     .then('--validate', (response) => {
       expect(response).toEqual(strValidate);
     }));
-  test('Option { validate: true } --stats', () => cli(pathAbsolute, '--stats', { validate: true })
+  test('Option { validate: true } --stats', () => functionCli.cli(pathAbsolute, '--stats', { validate: true })
     .then('--stats', (response) => {
       expect(response).toEqual(strStats);
     }));
-  test('Option { validate: true } --stats --validate', () => cli(pathAbsolute, '--stats--validate', { validate: true })
+  test('Option { validate: true } --stats --validate', () => functionCli.cli(pathAbsolute, '--stats--validate', { validate: true })
     .then('--stats--validate', (response) => {
       expect(response).toEqual(strStatsValidate);
     }));
-  test('Option { validate: false }', () => cli(pathAbsolute, { validate: false })
+  test('Option { validate: false }', () => functionCli.cli(pathAbsolute, { validate: false })
     .then('Solo Path', (response) => {
       expect(response).toEqual(string);
     }));

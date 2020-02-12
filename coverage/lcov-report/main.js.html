@@ -7,7 +7,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
             background-image: url(sort-arrow-sprite.png);
@@ -22,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.08% </span>
+                <span class="strong">96.19% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>98/102</span>
+                <span class='fraction'>101/105</span>
             </div>
         
             
@@ -43,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.7% </span>
+                <span class="strong">95.83% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>89/93</span>
+                <span class='fraction'>92/96</span>
             </div>
         
             
@@ -217,10 +218,19 @@
 <a name='L159'></a><a href='#L159'>159</a>
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
@@ -289,6 +299,7 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -346,7 +357,6 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -378,22 +388,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
-  verifyDirectory, readDirectory, unionPath, verifyExtension, readDocument,
-  converterHtml, verifyPathAbsolute, converterAbsolute, statusHttp,
-} from './app.js';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const functionApp = require('./app.js');
 &nbsp;
 //  1. Devuelve un array de documentos Markdown - "Funcion recursiva".
-export const getPathMd = (pathAbsolute) =&gt; verifyDirectory(pathAbsolute)
+const getPathMd = (pathAbsolute) =&gt; functionApp.verifyDirectory(pathAbsolute)
   .then((directory) =&gt; {
     let newArray = []; // Array de los path.
     if (directory === true) {
-      return readDirectory(pathAbsolute)
+      return functionApp.readDirectory(pathAbsolute)
         .then((files) =&gt; {
           const arrayPromise = []; // Array de Promesas.
           files.forEach((file) =&gt; {
-            const newPath = unionPath(pathAbsolute, file);
-            if (verifyExtension(newPath) === '.md') {
+            const newPath = functionApp.unionPath(pathAbsolute, file);
+            if (functionApp.verifyExtension(newPath) === '.md') {
               newArray.push(newPath);
             } else {
               arrayPromise.push(getPathMd(newPath));
@@ -407,21 +429,21 @@ export const getPathMd = (pathAbsolute) =&gt; verifyDirectory(pathAbsolute)
           });
         });
     }
-    if (directory === false &amp;&amp; verifyExtension(pathAbsolute) === '.md') {
+    if (directory === false &amp;&amp; functionApp.verifyExtension(pathAbsolute) === '.md') {
       newArray.push(pathAbsolute);
     }
     return newArray; // RETURN - Finalizar then de una promesa
   }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >err)</span>;
 &nbsp;
 // 2. Convertir de Markdown a HTML.
-export const renderHtml = (documentMd) =&gt; readDocument(documentMd)
+const renderHtml = (documentMd) =&gt; functionApp.readDocument(documentMd)
   .then((result) =&gt; {
-    const documentHtml = converterHtml(result);
+    const documentHtml = functionApp.converterHtml(result);
     return documentHtml;
   }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >err)</span>;
 &nbsp;
 // 3. Devuelve un ARRAY DE OBJETOS con los LINKS.
-export const arrLink = (documentHtml, pathAbsolute) =&gt; {
+const arrLink = (documentHtml, pathAbsolute) =&gt; {
   const firstPartition = documentHtml.split('&lt;a ');
   const arrAnchor = [];
   firstPartition.forEach((ele) =&gt; {
@@ -447,15 +469,16 @@ export const arrLink = (documentHtml, pathAbsolute) =&gt; {
 };
 &nbsp;
 // 4. Devuelve una ruta absoluta.
-export const isAbsolute = (path) =&gt; {
+const isAbsolute = (path) =&gt; {
   let newPathAbsolute = '';
-  if (verifyPathAbsolute(path) === true) newPathAbsolute = path;
-  if (verifyPathAbsolute(path) === false) newPathAbsolute = converterAbsolute(path);
+  if (functionApp.verifyPathAbsolute(path) === true) newPathAbsolute = path;
+  // eslint-disable-next-line max-len
+  if (functionApp.verifyPathAbsolute(path) === false) newPathAbsolute = functionApp.converterAbsolute(path);
   return newPathAbsolute;
 };
 &nbsp;
 // 5. Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
-export const getMdLink = (path) =&gt; {
+const getMdLink = (path) =&gt; {
   const pathAbsolute = isAbsolute(path);
   return getPathMd(pathAbsolute)
     .then((arrMd) =&gt; {
@@ -472,10 +495,10 @@ export const getMdLink = (path) =&gt; {
 };
 &nbsp;
 // 6. Funcion que devuelve 5 propiedades de un obj a partir de los 3 que ya venia teniendo.
-export const arrLinkValidate = (docHtml, pathAbsolute) =&gt; {
+const arrLinkValidate = (docHtml, pathAbsolute) =&gt; {
   const arrObj = arrLink(docHtml, pathAbsolute);
   let newArray = [];
-  const arrObjValidate = arrObj.map((element) =&gt; statusHttp(element.href)
+  const arrObjValidate = arrObj.map((element) =&gt; functionApp.statusHttp(element.href)
     .then((resHttp) =&gt; {
       const obj = {
         status: resHttp.status,
@@ -493,7 +516,7 @@ export const arrLinkValidate = (docHtml, pathAbsolute) =&gt; {
 };
 &nbsp;
 // 7. Funcion MdLinks: Desde la ruta absoluta - 5 propiedades.
-export const getMdLinkValidate = (path) =&gt; {
+const getMdLinkValidate = (path) =&gt; {
   const pathAbsolute = isAbsolute(path);
   return getPathMd(pathAbsolute)
     .then((arrMd) =&gt; {
@@ -510,11 +533,10 @@ export const getMdLinkValidate = (path) =&gt; {
 };
 &nbsp;
 // 8. Valida si imprimirà un array de 3 o 5 propiedades.
-// eslint-disable-next-line max-len
-export const mdLinks = (path, options) =&gt; (options.validate ? getMdLinkValidate(path) : getMdLink(path));
+const mdLinks = (path, options) =&gt; (options.validate ? getMdLinkValidate(path) : getMdLink(path));
 &nbsp;
 // 9. Opcion stats
-export const stats = (array) =&gt; {
+const stats = (array) =&gt; {
   const newArray = [];
   array.forEach((element) =&gt; {
     newArray.push(element.href);
@@ -530,7 +552,7 @@ export const stats = (array) =&gt; {
 };
 &nbsp;
 // 10. Opcion validate
-export const validate = (array) =&gt; {
+const validate = (array) =&gt; {
   const newArray = [];
   array.forEach((element) =&gt; {
     if (element.message !== 'OK') {
@@ -539,6 +561,21 @@ export const validate = (array) =&gt; {
   });
   return newArray.length;
 };
+&nbsp;
+const functionMain = {
+  getPathMd,
+  renderHtml,
+  arrLink,
+  isAbsolute,
+  getMdLink,
+  arrLinkValidate,
+  getMdLinkValidate,
+  mdLinks,
+  stats,
+  validate,
+};
+&nbsp;
+module.exports = functionMain;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -546,7 +583,7 @@ export const validate = (array) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Feb 12 2020 04:39:00 GMT-0500 (Peru Standard Time)
+                at Wed Feb 12 2020 09:24:35 GMT-0500 (Peru Standard Time)
             </div>
         </div>
         <script src="prettify.js"></script>

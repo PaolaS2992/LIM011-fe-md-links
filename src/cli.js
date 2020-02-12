@@ -1,8 +1,8 @@
-import { mdLinks, stats, validate } from './main.js';
+const functionMain = require('./main.js');
 
-export const cli = (path, options) => {
+const cli = (path, options) => {
   if (options === '--validate') {
-    return mdLinks(path, { validate: true }).then((response) => {
+    return functionMain.mdLinks(path, { validate: true }).then((response) => {
       let string = '';
       response.forEach((e) => {
         string += `\n File: ${e.file}\n Href: ${e.href}\n Text: ${e.text}\n Status: ${e.status}\n Message: ${e.message}\n`;
@@ -11,8 +11,8 @@ export const cli = (path, options) => {
     });
   }
   if (options === '--stats') {
-    return mdLinks(path, { validate: true }).then((response) => {
-      const objStats = stats(response);
+    return functionMain.mdLinks(path, { validate: true }).then((response) => {
+      const objStats = functionMain.stats(response);
       const string = `
           \n Total: ${objStats.total}
           \n Unique: ${objStats.unique}
@@ -21,9 +21,9 @@ export const cli = (path, options) => {
     });
   }
   if (options === '--stats--validate' || options === '--validate--stats') {
-    return mdLinks(path, { validate: true }).then((response) => {
-      const objValidate = validate(response);
-      const objStats = stats(response);
+    return functionMain.mdLinks(path, { validate: true }).then((response) => {
+      const objValidate = functionMain.validate(response);
+      const objStats = functionMain.stats(response);
       const string = `
           \n Broken: ${objValidate}
           \n Total: ${objStats.total}
@@ -32,10 +32,7 @@ export const cli = (path, options) => {
       return string;
     }).catch((err) => console.log(err));
   }
-  /* if (options === '') {
-
-  } */
-  return mdLinks(path, { validate: false }).then((response) => {
+  return functionMain.mdLinks(path, { validate: false }).then((response) => {
     let string = '';
     response.forEach((e) => {
       string += `\n File: ${e.file}\n Href: ${e.href}\n Text: ${e.text}\n`;
@@ -43,3 +40,8 @@ export const cli = (path, options) => {
     return string;
   });
 };
+
+const functionCli = {
+  cli,
+};
+module.exports = functionCli;
