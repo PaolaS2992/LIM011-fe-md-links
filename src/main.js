@@ -1,19 +1,16 @@
-import {
-  verifyDirectory, readDirectory, unionPath, verifyExtension, readDocument,
-  converterHtml, verifyPathAbsolute, converterAbsolute, statusHttp,
-} from './app.js';
+const functionApp = require('./app.js');
 
 //  1. Devuelve un array de documentos Markdown - "Funcion recursiva".
-export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
+const getPathMd = (pathAbsolute) => functionApp.verifyDirectory(pathAbsolute)
   .then((directory) => {
     let newArray = []; // Array de los path.
     if (directory === true) {
-      return readDirectory(pathAbsolute)
+      return functionApp.readDirectory(pathAbsolute)
         .then((files) => {
           const arrayPromise = []; // Array de Promesas.
           files.forEach((file) => {
-            const newPath = unionPath(pathAbsolute, file);
-            if (verifyExtension(newPath) === '.md') {
+            const newPath = functionApp.unionPath(pathAbsolute, file);
+            if (functionApp.verifyExtension(newPath) === '.md') {
               newArray.push(newPath);
             } else {
               arrayPromise.push(getPathMd(newPath));
@@ -27,21 +24,21 @@ export const getPathMd = (pathAbsolute) => verifyDirectory(pathAbsolute)
           });
         });
     }
-    if (directory === false && verifyExtension(pathAbsolute) === '.md') {
+    if (directory === false && functionApp.verifyExtension(pathAbsolute) === '.md') {
       newArray.push(pathAbsolute);
     }
     return newArray; // RETURN - Finalizar then de una promesa
   }).catch((err) => err);
 
 // 2. Convertir de Markdown a HTML.
-export const renderHtml = (documentMd) => readDocument(documentMd)
+const renderHtml = (documentMd) => functionApp.readDocument(documentMd)
   .then((result) => {
-    const documentHtml = converterHtml(result);
+    const documentHtml = functionApp.converterHtml(result);
     return documentHtml;
   }).catch((err) => err);
 
 // 3. Devuelve un ARRAY DE OBJETOS con los LINKS.
-export const arrLink = (documentHtml, pathAbsolute) => {
+const arrLink = (documentHtml, pathAbsolute) => {
   const firstPartition = documentHtml.split('<a ');
   const arrAnchor = [];
   firstPartition.forEach((ele) => {
@@ -67,15 +64,16 @@ export const arrLink = (documentHtml, pathAbsolute) => {
 };
 
 // 4. Devuelve una ruta absoluta.
-export const isAbsolute = (path) => {
+const isAbsolute = (path) => {
   let newPathAbsolute = '';
-  if (verifyPathAbsolute(path) === true) newPathAbsolute = path;
-  if (verifyPathAbsolute(path) === false) newPathAbsolute = converterAbsolute(path);
+  if (functionApp.verifyPathAbsolute(path) === true) newPathAbsolute = path;
+  // eslint-disable-next-line max-len
+  if (functionApp.verifyPathAbsolute(path) === false) newPathAbsolute = functionApp.converterAbsolute(path);
   return newPathAbsolute;
 };
 
 // 5. Funcion MdLinks: Desde la ruta absoluta - 3 propiedades.
-export const getMdLink = (path) => {
+const getMdLink = (path) => {
   const pathAbsolute = isAbsolute(path);
   return getPathMd(pathAbsolute)
     .then((arrMd) => {
@@ -92,10 +90,10 @@ export const getMdLink = (path) => {
 };
 
 // 6. Funcion que devuelve 5 propiedades de un obj a partir de los 3 que ya venia teniendo.
-export const arrLinkValidate = (docHtml, pathAbsolute) => {
+const arrLinkValidate = (docHtml, pathAbsolute) => {
   const arrObj = arrLink(docHtml, pathAbsolute);
   let newArray = [];
-  const arrObjValidate = arrObj.map((element) => statusHttp(element.href)
+  const arrObjValidate = arrObj.map((element) => functionApp.statusHttp(element.href)
     .then((resHttp) => {
       const obj = {
         status: resHttp.status,
@@ -113,7 +111,7 @@ export const arrLinkValidate = (docHtml, pathAbsolute) => {
 };
 
 // 7. Funcion MdLinks: Desde la ruta absoluta - 5 propiedades.
-export const getMdLinkValidate = (path) => {
+const getMdLinkValidate = (path) => {
   const pathAbsolute = isAbsolute(path);
   return getPathMd(pathAbsolute)
     .then((arrMd) => {
@@ -130,11 +128,10 @@ export const getMdLinkValidate = (path) => {
 };
 
 // 8. Valida si imprimirà un array de 3 o 5 propiedades.
-// eslint-disable-next-line max-len
-export const mdLinks = (path, options) => (options.validate ? getMdLinkValidate(path) : getMdLink(path));
+const mdLinks = (path, options) => (options.validate ? getMdLinkValidate(path) : getMdLink(path));
 
 // 9. Opcion stats
-export const stats = (array) => {
+const stats = (array) => {
   const newArray = [];
   array.forEach((element) => {
     newArray.push(element.href);
@@ -150,7 +147,7 @@ export const stats = (array) => {
 };
 
 // 10. Opcion validate
-export const validate = (array) => {
+const validate = (array) => {
   const newArray = [];
   array.forEach((element) => {
     if (element.message !== 'OK') {
@@ -159,3 +156,18 @@ export const validate = (array) => {
   });
   return newArray.length;
 };
+
+const functionMain = {
+  getPathMd,
+  renderHtml,
+  arrLink,
+  isAbsolute,
+  getMdLink,
+  arrLinkValidate,
+  getMdLinkValidate,
+  mdLinks,
+  stats,
+  validate,
+};
+
+module.exports = functionMain;

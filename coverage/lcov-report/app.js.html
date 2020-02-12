@@ -7,7 +7,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
             background-image: url(sort-arrow-sprite.png);
@@ -22,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.91% </span>
+                <span class="strong">91.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>40/44</span>
+                <span class='fraction'>42/46</span>
             </div>
         
             
@@ -43,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.97% </span>
+                <span class="strong">97.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/33</span>
+                <span class='fraction'>34/35</span>
             </div>
         
             
@@ -135,7 +136,21 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -214,6 +229,20 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
@@ -226,21 +255,21 @@ const md = require('markdown-it')({
 /* ----------- PATH ----------- */
 &nbsp;
 // Valida si la ruta es absoluta.
-export const verifyPathAbsolute = (ruta) =&gt; path.isAbsolute(ruta);
+const verifyPathAbsolute = (ruta) =&gt; path.isAbsolute(ruta);
 &nbsp;
 // Convierte la ruta a absoluta.
-export const converterAbsolute = (ruta) =&gt; path.resolve(ruta);
+const converterAbsolute = (ruta) =&gt; path.resolve(ruta);
 &nbsp;
 // Une ruta absoluta con ruta relativa.
-export const unionPath = (rutaRaiz, newRuta) =&gt; path.join(rutaRaiz, newRuta);
+const unionPath = (rutaRaiz, newRuta) =&gt; path.join(rutaRaiz, newRuta);
 &nbsp;
 // Verificar extencion de documento.
-export const verifyExtension = (ruta) =&gt; path.extname(ruta);
+const verifyExtension = (ruta) =&gt; path.extname(ruta);
 &nbsp;
 /* ----------- FILE SYSTEM ----------- */
 &nbsp;
 // Validar si es directorio.
-export const verifyDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
+const verifyDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
   fs.stat(ruta, (error, stats) =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >reject(error);</span>
     resolve(stats.isDirectory());
@@ -251,7 +280,7 @@ export const verifyDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; 
 // export const existPathAbsolute = (ruta) =&gt; fs.existsSync(ruta);
 &nbsp;
 // Leer Directorio o carpeta.
-export const readDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
+const readDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
   fs.readdir(ruta, (error, files) =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >reject(error);</span>
     return resolve(files);
@@ -259,7 +288,7 @@ export const readDirectory = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
 });
 &nbsp;
 // Leer archivo Markdown.
-export const readDocument = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
+const readDocument = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
   fs.readFile(ruta, 'utf-8', (error, data) =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >reject(error);</span>
     return resolve(data);
@@ -269,7 +298,7 @@ export const readDocument = (ruta) =&gt; new Promise((resolve, reject) =&gt; {
 /* ----------- MARKDOWN-IT ----------- */
 &nbsp;
 // Convertir documento Markdown a HTML.
-export const converterHtml = (documentMnd) =&gt; {
+const converterHtml = (documentMnd) =&gt; {
   let documentHtml = '';
   documentHtml = md.render(documentMnd);
   return documentHtml;
@@ -277,7 +306,7 @@ export const converterHtml = (documentMnd) =&gt; {
 &nbsp;
 /* ----------- FETCH ----------- */
 &nbsp;
-export const statusHttp = (url) =&gt; fetch(url)
+const statusHttp = (url) =&gt; fetch(url)
   .then((res) =&gt; {
     let mensaje = '';
     if (res.ok) {
@@ -293,6 +322,20 @@ export const statusHttp = (url) =&gt; fetch(url)
     return obj;
   })
   .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >err)</span>;
+&nbsp;
+&nbsp;
+const functionApp = {
+  verifyPathAbsolute,
+  converterAbsolute,
+  unionPath,
+  verifyExtension,
+  verifyDirectory,
+  readDirectory,
+  readDocument,
+  converterHtml,
+  statusHttp,
+};
+module.exports = functionApp;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -300,7 +343,7 @@ export const statusHttp = (url) =&gt; fetch(url)
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Feb 11 2020 17:59:25 GMT-0500 (Peru Standard Time)
+                at Wed Feb 12 2020 08:27:27 GMT-0500 (Peru Standard Time)
             </div>
         </div>
         <script src="prettify.js"></script>
