@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const functionCli = require('./cli.js');
+const cli = require('./optionCLI.js');
 
 const cliOptions = (process) => {
   let opcion = '';
@@ -18,9 +18,16 @@ const cliPath = process.argv[2];
 const cliOption = cliOptions(process.argv);
 
 if (cliPath === undefined) {
-  console.log('Ingresar ruta !');
+  console.log(`
+    - - - - - - - - - - Instrucciones - - - - - - - - - - -
+    Forma 1 : md-links Ruta_del_Archivo
+    Forma 2 : md-links Ruta_del_Archivo --validate
+    Forma 3 : md-links Ruta_del_Archivo --stats
+    Forma 4 : md-links Ruta_del_Archivo --stats --validate
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  `);
 } else {
-  functionCli.cli(cliPath, cliOption)
+  cli(cliPath, cliOption)
     .then((response) => console.log(response))
     .catch((err) => console.error(err));
 }

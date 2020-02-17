@@ -1,8 +1,9 @@
 const functionMain = require('./main.js');
+const mdLinks = require('./mdlinks.js');
 
 const cli = (path, options) => {
   if (options === '--validate') {
-    return functionMain.mdLinks(path, { validate: true }).then((response) => {
+    return mdLinks(path, { validate: true }).then((response) => {
       let string = '';
       response.forEach((e) => {
         string += `\n File: ${e.file}\n Href: ${e.href}\n Text: ${e.text}\n Status: ${e.status}\n Message: ${e.message}\n`;
@@ -11,7 +12,7 @@ const cli = (path, options) => {
     });
   }
   if (options === '--stats') {
-    return functionMain.mdLinks(path, { validate: true }).then((response) => {
+    return mdLinks(path, { validate: true }).then((response) => {
       const objStats = functionMain.stats(response);
       const string = `
           \n Total: ${objStats.total}
@@ -21,7 +22,7 @@ const cli = (path, options) => {
     });
   }
   if (options === '--stats--validate' || options === '--validate--stats') {
-    return functionMain.mdLinks(path, { validate: true }).then((response) => {
+    return mdLinks(path, { validate: true }).then((response) => {
       const objValidate = functionMain.validate(response);
       const objStats = functionMain.stats(response);
       const string = `
@@ -32,7 +33,7 @@ const cli = (path, options) => {
       return string;
     }).catch((err) => console.log(err));
   }
-  return functionMain.mdLinks(path, { validate: false }).then((response) => {
+  return mdLinks(path, { validate: false }).then((response) => {
     let string = '';
     response.forEach((e) => {
       string += `\n File: ${e.file}\n Href: ${e.href}\n Text: ${e.text}\n`;
@@ -41,7 +42,4 @@ const cli = (path, options) => {
   });
 };
 
-const functionCli = {
-  cli,
-};
-module.exports = functionCli;
+module.exports = cli;

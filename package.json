@@ -2,7 +2,7 @@
   "name": "md-links",
   "version": "1.0.0",
   "description": "Testeador de links de archivos Markdown",
-  "main": "src/main.js",
+  "main": "src/mdlinks.js",
   "scripts": {
     "pretest": "npm run eslint",
     "eslint": "eslint --ext .js src/ test/",

@@ -31,9 +31,6 @@ const verifyDirectory = (ruta) => new Promise((resolve, reject) => {
   });
 });
 
-// Validar Ruta existente.
-// export const existPathAbsolute = (ruta) => fs.existsSync(ruta);
-
 // Leer Directorio o carpeta.
 const readDirectory = (ruta) => new Promise((resolve, reject) => {
   fs.readdir(ruta, (error, files) => {
