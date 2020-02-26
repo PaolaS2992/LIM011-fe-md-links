@@ -1,13 +1,11 @@
 const functionApp = require('./app.js');
 
 // 1. Devuelve una ruta absoluta.
-const isAbsolute = (path) => {
-  let newPathAbsolute = '';
-  if (functionApp.verifyPathAbsolute(path) === true) newPathAbsolute = path;
-  // eslint-disable-next-line max-len
-  if (functionApp.verifyPathAbsolute(path) === false) newPathAbsolute = functionApp.converterAbsolute(path);
-  return newPathAbsolute;
-};
+
+const isAbsolute = (path) => (
+  (functionApp.verifyDirectory(path) ? path : functionApp.converterAbsolute(path))
+);
+
 
 // 2. Devuelve un array de documentos Markdown - "Funcion recursiva".
 const getPathMd = (pathAbsolute) => functionApp.verifyDirectory(pathAbsolute)
@@ -179,19 +177,6 @@ const getMdLinkValidate = (path) => {
     }).catch((err) => err);
 };
 
-/* const functionMain = {
-  getPathMd,
-  renderHtml,
-  arrLink,
-  isAbsolute,
-  getMdLink,
-  arrLinkValidate,
-  getMdLinkValidate,
-  mdLinks,
-  stats,
-  validate,
-}; */
-
 const functionMain = {
   getMdLink,
   getMdLinkValidate,
@@ -200,4 +185,3 @@ const functionMain = {
 };
 
 module.exports = functionMain;
-// module.exports = mdLinks;

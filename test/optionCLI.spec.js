@@ -1,6 +1,6 @@
 const path = require('path');
 
-const functionCli = require('../src/cli.js');
+const functionCli = require('../src/optionCLI.js');
 
 /* Inicio Fetch */
 

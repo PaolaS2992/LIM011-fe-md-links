@@ -13,7 +13,7 @@ const md = require('markdown-it')({
 const verifyPathAbsolute = (ruta) => path.isAbsolute(ruta);
 
 // Convierte la ruta a absoluta.
-const converterAbsolute = (ruta) => path.resolve(ruta);
+const converterAbsolute = (ruta) => path.join(process.cwd(), ruta);
 
 // Une ruta absoluta con ruta relativa.
 const unionPath = (rutaRaiz, newRuta) => path.join(rutaRaiz, newRuta);
@@ -61,12 +61,8 @@ const converterHtml = (documentMnd) => {
 const statusHttp = (url) => fetch(url)
   .then((res) => {
     let mensaje = '';
-    if (res.ok) {
-      mensaje = 'OK';
-    }
-    if (res.ok === false) {
-      mensaje = 'fail';
-    }
+    if (res.ok) mensaje = 'OK';
+    if (res.ok === false) mensaje = 'fail';
     const obj = {
       status: res.status,
       text: mensaje,
